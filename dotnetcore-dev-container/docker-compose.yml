@@ -8,4 +8,14 @@ services:
     environment:
       SA_PASSWORD: "0f6e883001c330bb91d708982f228d76" # local dev password
       ACCEPT_EULA: "Y"
+    volumes:
+      - sqlsystem:/var/opt/mssql/
+      - sqldata:/var/opt/sqlserver/data
+      - sqllog:/var/opt/sqlserver/log
+      - sqlbackup:/var/opt/sqlserver/backup
+volumes:
+  sqlsystem:
+  sqldata:
+  sqllog:
+  sqlbackup:
 # default username sa
