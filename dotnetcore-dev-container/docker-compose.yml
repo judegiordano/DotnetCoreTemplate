@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  dotnetcore-dev-container:
+    container_name: dotnetcore-dev-container
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "0f6e883001c330bb91d708982f228d76" # local dev password
+      ACCEPT_EULA: "Y"
+# default username sa
