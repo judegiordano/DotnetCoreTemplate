@@ -9,6 +9,7 @@ namespace WebApiTemplate.Profiles
         public CommandsProfile()
         {
             CreateMap<Command, CommandDto>();
+            CreateMap<CommandCreateDto, Command>();
         }
     }    
 }

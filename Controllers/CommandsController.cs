@@ -30,7 +30,7 @@ namespace WebApiTemplate.Controllers
         }
 
         // GET api/commands/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCommandById")]
         public async Task<ActionResult> GetCommandById(int id)
         {
             Command item = await _repo.GetCommandById(id);
@@ -39,6 +39,17 @@ namespace WebApiTemplate.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<CommandDto>(item));
+        }
+
+        // POST api/commands
+        [HttpPost]
+        public async Task<ActionResult> CreateCommand(CommandCreateDto cmd)
+        {
+            Command model = _mapper.Map<Command>(cmd);
+            Command done = await _repo.CreateCommand(model);
+            CommandDto mapped =_mapper.Map<CommandDto>(done);
+
+            return CreatedAtAction(nameof(GetCommandById), new { Id = mapped.Id }, mapped);
         }
     }
 }
