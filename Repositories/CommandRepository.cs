@@ -7,7 +7,7 @@ namespace WebApiTemplate.Repositories
 {
     public class CommandRepository : ICommandRepository
     {
-        public async Task<List<Command>> GetAppCommands()
+        public async Task<List<Command>> GetAllCommands()
         {
             var commands = new List<Command>
             {

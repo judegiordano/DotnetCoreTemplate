@@ -19,7 +19,7 @@ namespace WebApiTemplate.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllCommands()
         {
-            var items = await _repo.GetAppCommands();
+            var items = await _repo.GetAllCommands();
             return Ok(items);
         }
 

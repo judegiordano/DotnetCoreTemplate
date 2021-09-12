@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using WebApiTemplate.Database;
+using WebApiTemplate.Database.Settings;
 using WebApiTemplate.Repositories;
 using WebApiTemplate.Repositories.Abstract;
 
@@ -28,6 +31,10 @@ namespace WebApiTemplate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
+            DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
+            services.AddDbContext<CommandContext>(opt => opt.UseSqlServer(_database.ConnectionString));
+
             services.AddControllers();
 
             services.AddScoped<ICommandRepository, CommandRepository>();

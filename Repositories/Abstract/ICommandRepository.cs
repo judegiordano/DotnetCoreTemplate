@@ -6,7 +6,7 @@ namespace WebApiTemplate.Repositories.Abstract
 {
     public interface ICommandRepository
     {
-        Task<List<Command>> GetAppCommands();
+        Task<List<Command>> GetAllCommands();
         Task<Command> GetCommandById(int id);
     }
 }

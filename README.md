@@ -18,6 +18,9 @@ dotnet user-secrets clear
 ## ef cli
 ```sh
 dotnet ef
+dotnet ef migrations add <Migration Name>
+dotnet ef migrations remove
+dotnet ef database update
 ```
 
 ## template snippets
