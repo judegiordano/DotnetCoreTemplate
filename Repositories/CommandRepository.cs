@@ -37,5 +37,11 @@ namespace WebApiTemplate.Repositories
         {
             return await _db.Commands.FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<bool> UpdateCommand(Command cmd)
+        {
+            await _db.SaveChangesAsync();
+            return true;
+        }
     }
 }

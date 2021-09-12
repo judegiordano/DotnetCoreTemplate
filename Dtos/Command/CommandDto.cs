@@ -1,4 +1,4 @@
-namespace WebApiTemplate.Dtos
+namespace WebApiTemplate.Dtos.Command
 {
     public class CommandDto
     {

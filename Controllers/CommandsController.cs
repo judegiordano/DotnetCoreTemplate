@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApiTemplate.Dtos;
+using WebApiTemplate.Dtos.Command;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
 
@@ -47,9 +47,23 @@ namespace WebApiTemplate.Controllers
         {
             Command model = _mapper.Map<Command>(cmd);
             Command done = await _repo.CreateCommand(model);
-            CommandDto mapped =_mapper.Map<CommandDto>(done);
+            CommandDto mapped = _mapper.Map<CommandDto>(done);
 
             return CreatedAtAction(nameof(GetCommandById), new { Id = mapped.Id }, mapped);
+        }
+
+        // PUT api/commands{id}
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCommand(int id, CommandUpdateDto cmd)
+        {
+            Command exists = await _repo.GetCommandById(id);
+            if(exists == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(cmd, exists);
+            await _repo.UpdateCommand(exists);
+            return NoContent();
         }
     }
 }

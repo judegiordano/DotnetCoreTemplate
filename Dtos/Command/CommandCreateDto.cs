@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApiTemplate.Dtos
+namespace WebApiTemplate.Dtos.Command
 {
     public class CommandCreateDto
     {

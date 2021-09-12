@@ -1,5 +1,5 @@
 using AutoMapper;
-using WebApiTemplate.Dtos;
+using WebApiTemplate.Dtos.Command;
 using WebApiTemplate.Models;
 
 namespace WebApiTemplate.Profiles
@@ -10,6 +10,7 @@ namespace WebApiTemplate.Profiles
         {
             CreateMap<Command, CommandDto>();
             CreateMap<CommandCreateDto, Command>();
+            CreateMap<CommandUpdateDto, Command>();
         }
     }    
 }
