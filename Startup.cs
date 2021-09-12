@@ -17,6 +17,8 @@ using WebApiTemplate.Database.Settings;
 using WebApiTemplate.Repositories;
 using WebApiTemplate.Repositories.Abstract;
 using Newtonsoft.Json.Serialization;
+using WebApiTemplate.Middleware;
+using WebApiTemplate.Middleware.Abstract;
 
 namespace WebApiTemplate
 {
@@ -36,12 +38,17 @@ namespace WebApiTemplate
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
-            services.AddControllers().AddNewtonsoftJson(s => 
+            // Di app tokens
+            RequestValidation tokens = Configuration.GetSection("WebApiTemplate").Get<RequestValidation>();
+            services.AddSingleton<IRequestValidation>(tokens);
+
+            services.AddControllers().AddNewtonsoftJson(s =>
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             // Di automapper for DTO
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Di repositories
             services.AddScoped<ICommandRepository, CommandRepository>();
 
             services.AddSwaggerGen(c =>
@@ -65,6 +72,9 @@ namespace WebApiTemplate
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<SecurityHeaders>();
+            app.UseMiddleware<Authentication>();
 
             app.UseEndpoints(endpoints =>
             {
