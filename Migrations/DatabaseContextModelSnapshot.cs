@@ -7,8 +7,8 @@ using WebApiTemplate.Database;
 
 namespace WebApiTemplate.Migrations
 {
-    [DbContext(typeof(CommandContext))]
-    partial class CommandContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DatabaseContext))]
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

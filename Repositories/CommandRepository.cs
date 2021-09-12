@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using WebApiTemplate.Database;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
 
@@ -7,29 +9,20 @@ namespace WebApiTemplate.Repositories
 {
     public class CommandRepository : ICommandRepository
     {
+        private readonly DatabaseContext _db;
+        public CommandRepository(DatabaseContext db)
+        {
+            _db = db;
+        }
+
         public async Task<List<Command>> GetAllCommands()
         {
-            var commands = new List<Command>
-            {
-                new Command{ Id = 0, HowTo = "Boil an Egg", Line = "Boil Water", Platform = "Kettle and Pan" },
-                new Command{ Id = 1, HowTo = "Cut Bread", Line = "Get a Knife", Platform = "Chopping Board" },
-                new Command{ Id = 2, HowTo = "Make Tea", Line = "Place Teabag in Cup", Platform = "Kettle and Cup" },
-            };
-
-            return commands;
+            return await _db.Commands.ToListAsync();
         }
 
         public async Task<Command> GetCommandById(int id)
         {
-            var commands = new List<Command>
-            {
-                new Command{ Id = 0, HowTo = "Boil an Egg", Line = "Boil Water", Platform = "Kettle and Pan" },
-                new Command{ Id = 1, HowTo = "Cut Bread", Line = "Get a Knife", Platform = "Chopping Board" },
-                new Command{ Id = 2, HowTo = "Make Tea", Line = "Place Teabag in Cup", Platform = "Kettle and Cup" },
-            };
-
-            var found = commands.Find(a => a.Id == id);
-            return found;
+            return await _db.Commands.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

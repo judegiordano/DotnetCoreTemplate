@@ -33,7 +33,7 @@ namespace WebApiTemplate
         {
             // Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
-            services.AddDbContext<CommandContext>(opt => opt.UseSqlServer(_database.ConnectionString));
+            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
             services.AddControllers();
 

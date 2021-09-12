@@ -3,9 +3,9 @@ using WebApiTemplate.Models;
 
 namespace WebApiTemplate.Database
 {
-    public class CommandContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public CommandContext(DbContextOptions<CommandContext> opt) : base(opt)
+        public DatabaseContext(DbContextOptions<DatabaseContext> opt) : base(opt)
         {
             
         }

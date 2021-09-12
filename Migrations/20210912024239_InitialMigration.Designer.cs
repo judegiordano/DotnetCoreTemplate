@@ -8,8 +8,8 @@ using WebApiTemplate.Database;
 
 namespace WebApiTemplate.Migrations
 {
-    [DbContext(typeof(CommandContext))]
-    [Migration("20210912002439_InitialMigration")]
+    [DbContext(typeof(DatabaseContext))]
+    [Migration("20210912024239_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

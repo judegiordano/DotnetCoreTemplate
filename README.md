@@ -29,4 +29,15 @@ prop -> {TAB} # new class property
 ctor -> {TAB} # class constructor
 ```
 
+## docker
+```
+docker volume ls
+docker volume prune
+```
+
 ## [Nuget Registry]("https://www.nuget.org/)
+
+## Running Locally
+```
+dotnet user-secrets set "WebApiTemplate:ConnectionString" <ssms connection string>
+```
