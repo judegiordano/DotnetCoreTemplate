@@ -73,7 +73,7 @@ namespace WebApiTemplate.Controllers
             CommandUpdateDto commandToPatch = _mapper.Map<CommandUpdateDto>(exists);
             cmd.ApplyTo(commandToPatch, ModelState);
 
-            if(!TryValidateModel(cmd)) return ValidationProblem(ModelState);
+            if (!TryValidateModel(cmd)) return ValidationProblem(ModelState);
 
             _mapper.Map(commandToPatch, exists);
             await _repo.UpdateCommand(exists);
@@ -85,7 +85,7 @@ namespace WebApiTemplate.Controllers
         public async Task<ActionResult> DeleteCommand(int id)
         {
             Command exists = await _repo.GetCommandById(id);
-            if (exists == null) return NotFound();           
+            if (exists == null) return NotFound();
 
             await _repo.DeleteCommand(exists);
             return NoContent();
