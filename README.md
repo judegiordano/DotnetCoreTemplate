@@ -35,9 +35,9 @@ docker volume ls
 docker volume prune
 ```
 
-## [Nuget Registry]("https://www.nuget.org/)
-
 ## Running Locally
 ```
 dotnet user-secrets set "WebApiTemplate:ConnectionString" <ssms connection string>
 ```
+
+## [Nuget Registry](https://www.nuget.org/)
