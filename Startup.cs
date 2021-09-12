@@ -37,6 +37,9 @@ namespace WebApiTemplate
 
             services.AddControllers();
 
+            // Di automapper for DTO
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddScoped<ICommandRepository, CommandRepository>();
 
             services.AddSwaggerGen(c =>
