@@ -79,5 +79,16 @@ namespace WebApiTemplate.Controllers
             await _repo.UpdateCommand(exists);
             return NoContent();
         }
+
+        // DELETE api/commands/{id}
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCommand(int id)
+        {
+            Command exists = await _repo.GetCommandById(id);
+            if (exists == null) return NotFound();           
+
+            await _repo.DeleteCommand(exists);
+            return NoContent();
+        }
     }
 }

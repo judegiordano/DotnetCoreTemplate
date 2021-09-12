@@ -10,5 +10,6 @@ namespace WebApiTemplate.Repositories.Abstract
         Task<Command> GetCommandById(int id);
         Task<Command> CreateCommand(Command cmd);
         Task<bool> UpdateCommand(Command cmd);
+        Task<bool> DeleteCommand(Command cmd);
     }
 }

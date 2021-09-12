@@ -19,13 +19,18 @@ namespace WebApiTemplate.Repositories
 
         public async Task<Command> CreateCommand(Command cmd)
         {
-            if(cmd == null)
-            {
-                throw new ArgumentNullException(nameof(cmd));
-            }
+            if(cmd == null) throw new ArgumentNullException(nameof(cmd));
             await _db.Commands.AddAsync(cmd);
             await _db.SaveChangesAsync();
             return cmd;
+        }
+
+        public async Task<bool> DeleteCommand(Command cmd)
+        {
+            if(cmd == null) throw new ArgumentNullException(nameof(cmd));
+            _db.Commands.Remove(cmd);
+            await _db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<Command>> GetAllCommands()
