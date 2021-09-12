@@ -1,5 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApiTemplate.Dtos;
+using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
 
 namespace WebApiTemplate.Controllers
@@ -9,30 +13,32 @@ namespace WebApiTemplate.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ICommandRepository _repo;
+        private readonly IMapper _mapper;
 
-        public CommandsController(ICommandRepository repo)
+        public CommandsController(ICommandRepository repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         // GET api/commands
         [HttpGet]
         public async Task<ActionResult> GetAllCommands()
         {
-            var items = await _repo.GetAllCommands();
-            return Ok(items);
+            List<Command> items = await _repo.GetAllCommands();
+            return Ok(_mapper.Map<List<CommandDto>>(items));
         }
 
         // GET api/commands/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult> GetCommandById(int id)
         {
-            var item = await _repo.GetCommandById(id);
+            Command item = await _repo.GetCommandById(id);
             if (item == null)
             {
-                return NotFound(item);
+                return NotFound();
             }
-            return Ok(item);
+            return Ok(_mapper.Map<CommandDto>(item));
         }
     }
 }

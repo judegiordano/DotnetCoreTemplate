@@ -4,7 +4,7 @@ using WebApiTemplate.Models;
 
 namespace WebApiTemplate.Profiles
 {
-    class CommandsProfile : Profile
+    public class CommandsProfile : Profile
     {
         public CommandsProfile()
         {
