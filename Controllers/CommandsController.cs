@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,10 +35,8 @@ namespace WebApiTemplate.Controllers
         public async Task<ActionResult> GetCommandById(int id)
         {
             Command item = await _repo.GetCommandById(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
+            if (item == null) return NotFound();
+
             return Ok(_mapper.Map<CommandDto>(item));
         }
 
@@ -52,16 +51,31 @@ namespace WebApiTemplate.Controllers
             return CreatedAtAction(nameof(GetCommandById), new { Id = mapped.Id }, mapped);
         }
 
-        // PUT api/commands{id}
+        // PUT api/commands/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, CommandUpdateDto cmd)
         {
             Command exists = await _repo.GetCommandById(id);
-            if(exists == null)
-            {
-                return NotFound();
-            }
+            if (exists == null) return NotFound();
+
             _mapper.Map(cmd, exists);
+            await _repo.UpdateCommand(exists);
+            return NoContent();
+        }
+
+        // PATCH api/commands/{id}
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PartialUpdate(int id, JsonPatchDocument<CommandUpdateDto> cmd)
+        {
+            Command exists = await _repo.GetCommandById(id);
+            if (exists == null) return NotFound();
+
+            CommandUpdateDto commandToPatch = _mapper.Map<CommandUpdateDto>(exists);
+            cmd.ApplyTo(commandToPatch, ModelState);
+
+            if(!TryValidateModel(cmd)) return ValidationProblem(ModelState);
+
+            _mapper.Map(commandToPatch, exists);
             await _repo.UpdateCommand(exists);
             return NoContent();
         }

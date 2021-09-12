@@ -16,6 +16,7 @@ using WebApiTemplate.Database;
 using WebApiTemplate.Database.Settings;
 using WebApiTemplate.Repositories;
 using WebApiTemplate.Repositories.Abstract;
+using Newtonsoft.Json.Serialization;
 
 namespace WebApiTemplate
 {
@@ -35,7 +36,8 @@ namespace WebApiTemplate
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s => 
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             // Di automapper for DTO
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

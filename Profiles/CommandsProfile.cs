@@ -11,6 +11,7 @@ namespace WebApiTemplate.Profiles
             CreateMap<Command, CommandDto>();
             CreateMap<CommandCreateDto, Command>();
             CreateMap<CommandUpdateDto, Command>();
+            CreateMap<Command, CommandUpdateDto>();
         }
     }    
 }
