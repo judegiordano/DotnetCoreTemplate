@@ -30,7 +30,7 @@ namespace WebApiTemplate.Controllers
         }
 
         // GET api/commands/{id}
-        [HttpGet("{id}", Name = "GetCommandById")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetCommandById(int id)
         {
             Command item = await _repo.GetCommandById(id);
