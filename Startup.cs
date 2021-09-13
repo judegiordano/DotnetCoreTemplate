@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using WebApiTemplate.Database;
-using WebApiTemplate.Database.Settings;
 using WebApiTemplate.Repositories;
 using WebApiTemplate.Repositories.Abstract;
 using Newtonsoft.Json.Serialization;
@@ -15,6 +13,8 @@ using WebApiTemplate.Middleware;
 using WebApiTemplate.Middleware.Abstract;
 using WebApiTemplate.Services.Apptokens;
 using WebApiTemplate.Services.AuthConsumer;
+using WebApiTemplate.Services.Database.Settings;
+using WebApiTemplate.Services.Database;
 
 namespace WebApiTemplate
 {

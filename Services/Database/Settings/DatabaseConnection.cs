@@ -1,4 +1,4 @@
-namespace WebApiTemplate.Database.Settings
+namespace WebApiTemplate.Services.Database.Settings
 {
     public class DatabaseConnection
     {

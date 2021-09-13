@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WebApiTemplate.Database;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
+using WebApiTemplate.Services.Database;
 
 namespace WebApiTemplate.Repositories
 {
