@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiTemplate.Dtos.User;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
+using WebApiTemplate.Middleware;
+using WebApiTemplate.Services.AuthConsumer;
 
 namespace WebApiTemplate.Controllers
 {
@@ -20,6 +22,7 @@ namespace WebApiTemplate.Controllers
             _mapper = mapper;
         }
 
+        [OnlyAllow(AuthConsumers.Consumer.Developer)]
         [HttpGet("{id}")]
         public async Task<ActionResult> InsertUser(int id)
         {

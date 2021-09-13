@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebApiTemplate.Database;
 using WebApiTemplate.Database.Settings;
@@ -19,6 +13,8 @@ using WebApiTemplate.Repositories.Abstract;
 using Newtonsoft.Json.Serialization;
 using WebApiTemplate.Middleware;
 using WebApiTemplate.Middleware.Abstract;
+using WebApiTemplate.Services.Apptokens;
+using WebApiTemplate.Services.AuthConsumer;
 
 namespace WebApiTemplate
 {
@@ -38,10 +34,16 @@ namespace WebApiTemplate
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
-            // Di app tokens
-            RequestValidation tokens = Configuration.GetSection("WebApiTemplate").Get<RequestValidation>();
-            services.AddSingleton<IRequestValidation>(tokens);
+            // Di appcode
+            RequestValidation appcode = Configuration.GetSection("WebApiTemplate").Get<RequestValidation>();
+            services.AddSingleton<IRequestValidation>(appcode);
 
+            // Di app tokens
+            AuthorizationTokens tokens = Configuration.GetSection("WebApiTemplate").Get<AuthorizationTokens>();
+            services.AddSingleton<IAuthorizationTokens>(tokens);
+            AuthConsumers.Consumers.Add(AuthConsumers.Consumer.Developer, tokens.DeveloperToken);
+
+            // Di JSON Serializer
             services.AddControllers().AddNewtonsoftJson(s =>
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
@@ -68,15 +70,16 @@ namespace WebApiTemplate
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiTemplate v1"));
             }
 
+            // Custom middleware
+            app.UseMiddleware<ExceptionHandler>();
+            app.UseMiddleware<SecurityHeaders>();
+            app.UseMiddleware<Authentication>();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
-            // Custom middleware
-            app.UseMiddleware<SecurityHeaders>();
-            app.UseMiddleware<Authentication>();
 
             app.UseEndpoints(endpoints =>
             {
