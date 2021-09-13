@@ -9,8 +9,8 @@ using WebApiTemplate.Database;
 namespace WebApiTemplate.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210912024239_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210912230910_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,22 @@ namespace WebApiTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Commands");
+                });
+
+            modelBuilder.Entity("WebApiTemplate.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Username")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

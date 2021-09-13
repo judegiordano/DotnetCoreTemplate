@@ -50,6 +50,7 @@ namespace WebApiTemplate
 
             // Di repositories
             services.AddScoped<ICommandRepository, CommandRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddSwaggerGen(c =>
             {
@@ -73,6 +74,7 @@ namespace WebApiTemplate
 
             app.UseAuthorization();
 
+            // Custom middleware
             app.UseMiddleware<SecurityHeaders>();
             app.UseMiddleware<Authentication>();
 

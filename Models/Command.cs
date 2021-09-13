@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using WebApiTemplate.Models.Shared;
 
 namespace WebApiTemplate.Models
 {
-    public class Command
+    public class Command : Base
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [MaxLength(250)]
         public string HowTo { get; set; }
