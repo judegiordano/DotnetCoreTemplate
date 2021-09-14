@@ -8,7 +8,6 @@ namespace WebApiTemplate.Services.PasswordService
         {
             return BC.HashPassword(password);
         }
-
         public static bool VerifyHash(string password, string hash)
         {
             return BC.Verify(password, hash);

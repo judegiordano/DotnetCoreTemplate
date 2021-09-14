@@ -33,7 +33,7 @@ namespace WebApiTemplate.Middleware
                     throw new Exception("unauthorized");
                 }
                 string auth = AuthConsumers.Consumers[_value];
-                if(auth != token)
+                if (auth != token)
                 {
                     context.HttpContext.Response.StatusCode = 401;
                     throw new Exception("elevation required");

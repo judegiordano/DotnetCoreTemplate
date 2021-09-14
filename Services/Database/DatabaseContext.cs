@@ -9,12 +9,10 @@ namespace WebApiTemplate.Services.Database
         {
 
         }
-
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
         // {
         //     modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
         // }
-
         public DbSet<Command> Commands { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Password> Passwords { get; set; }

@@ -1,10 +1,10 @@
 namespace WebApiTemplate.Middleware.Abstract
 {
-    public interface IRequestValidation
+    public interface IAppCodeValidation
     {
         string AppCode { get; set; }
     }
-    public class RequestValidation : IRequestValidation
+    public class AppCodeValidation : IAppCodeValidation
     {
         public string AppCode { get; set; }
     }

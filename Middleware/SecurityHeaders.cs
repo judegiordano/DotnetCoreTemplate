@@ -5,7 +5,7 @@ namespace WebApiTemplate.Middleware
 {
     public class SecurityHeaders
     {
-        private readonly RequestDelegate _next;    
+        private readonly RequestDelegate _next;
 
         public SecurityHeaders(RequestDelegate next)
         {

@@ -7,9 +7,9 @@ namespace WebApiTemplate.Middleware
     public class Authentication
     {
         private readonly RequestDelegate _next;
-        private IRequestValidation _keys { get; set; }
+        private IAppCodeValidation _keys { get; set; }
 
-        public Authentication(RequestDelegate next, IRequestValidation keys)
+        public Authentication(RequestDelegate next, IAppCodeValidation keys)
         {
             _next = next;
             _keys = keys;

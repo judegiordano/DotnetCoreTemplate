@@ -40,8 +40,8 @@ namespace WebApiTemplate
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
             // Di appcode
-            RequestValidation appcode = Configuration.GetSection("WebApiTemplate").Get<RequestValidation>();
-            services.AddSingleton<IRequestValidation>(appcode);
+            AppCodeValidation appcode = Configuration.GetSection("WebApiTemplate").Get<AppCodeValidation>();
+            services.AddSingleton<IAppCodeValidation>(appcode);
 
             // Di app tokens
             AuthorizationTokens tokens = Configuration.GetSection("WebApiTemplate").Get<AuthorizationTokens>();
@@ -65,7 +65,7 @@ namespace WebApiTemplate
                 {
                     Version = appInfo.AppVersion,
                     Title = appInfo.AppTitle,
-                    Description = "A simple example ASP.NET Core Web API",
+                    Description = appInfo.AppDescription,
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {

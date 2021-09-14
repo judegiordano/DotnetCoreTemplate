@@ -8,7 +8,6 @@ namespace WebApiTemplate.Services.AuthConsumer
         {
             Developer
         }
-
         public static Dictionary<Consumer, string> Consumers = new Dictionary<Consumer, string>();
     }
 

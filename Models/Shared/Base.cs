@@ -5,6 +5,6 @@ namespace WebApiTemplate.Models.Shared
     public class Base
     {
         [Key]
-        public int Id { get; set; }    
-    }    
+        public int Id { get; set; }
+    }
 }
