@@ -4,6 +4,9 @@ dotnet new webapi
 dotnet new gitignore
 dotnet add package <package name>
 dotnet tool install --global dotnet-ef # for dotnet ef
+dotnet clean
+dotnet build
+dotnet run
 ```
 
 ## user secrets
