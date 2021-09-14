@@ -82,6 +82,9 @@ namespace WebApiTemplate.Migrations
 
                     b.HasIndex("PasswordId");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 

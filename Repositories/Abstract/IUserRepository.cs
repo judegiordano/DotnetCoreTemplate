@@ -7,5 +7,6 @@ namespace WebApiTemplate.Repositories.Abstract
     {
         Task<User> InsertUser(User user);
         Task<User> GetUserById(int id);
+        Task<User> VerifyUser(User user);
     }
 }

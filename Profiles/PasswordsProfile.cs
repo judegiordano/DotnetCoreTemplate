@@ -10,6 +10,8 @@ namespace WebApiTemplate.Profiles
         {
             CreateMap<Password, PasswordDto>();
             CreateMap<PasswordCreateDto, Password>();
+            CreateMap<PasswordVerifyDto, Password>();
+            CreateMap<Password, PasswordVerifyDto>();
         }
     }
 }

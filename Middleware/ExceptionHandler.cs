@@ -22,15 +22,21 @@ namespace WebApiTemplate.Middleware
             }
             catch (Exception ex)
             {
-                if (ex is ApplicationException)
+                await context.Response.WriteAsJsonAsync(new ErrorResponse
                 {
-                    await context.Response.WriteAsync(ex.Message);
-                    return;
-                }
-                context.Response.StatusCode = 500;
-                await context.Response.WriteAsync(ex.Message);
+                    Ok = false,
+                    Status = context.Response.StatusCode,
+                    Message = ex.Message
+                });
                 return;
             }
+        }
+
+        public class ErrorResponse
+        {
+            public bool Ok { get; set; }
+            public int Status { get; set; }
+            public string Message { get; set; }
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using WebApiTemplate.Models.Shared;
 
 namespace WebApiTemplate.Dtos.Password

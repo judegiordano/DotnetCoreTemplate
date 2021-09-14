@@ -31,12 +31,21 @@ namespace WebApiTemplate.Controllers
             return Ok(_mapper.Map<UserDto>(inserted));
         }
 
-        [HttpPut]
+        [HttpPost("register")]
         public async Task<ActionResult> InsertUser(UserCreateDto user)
         {
             User mapped = _mapper.Map<User>(user);
             User inserted = await _repo.InsertUser(mapped);
             UserDto done = _mapper.Map<UserDto>(inserted);
+            return Ok(done);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> VerifyUser(UserVerifyDto user)
+        {
+            User mapped = _mapper.Map<User>(user);
+            User found = await _repo.VerifyUser(mapped);
+            UserDto done = _mapper.Map<UserDto>(found);
             return Ok(done);
         }
     }

@@ -59,6 +59,12 @@ namespace WebApiTemplate.Migrations
                 name: "IX_Users_PasswordId",
                 table: "Users",
                 column: "PasswordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

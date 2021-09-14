@@ -1,8 +1,11 @@
+using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
 using WebApiTemplate.Services.Database;
+using WebApiTemplate.Services.PasswordService;
 
 namespace WebApiTemplate.Repositories
 {
@@ -29,12 +32,24 @@ namespace WebApiTemplate.Repositories
                 Username = user.Username,
                 Password = new Password
                 {
-                    Hash = user.Password.Hash
+                    Hash = PasswordService.HashPassword(user.Password.Hash)
                 }
             };
             await _db.Users.AddAsync(newUser);
             await _db.SaveChangesAsync();
             return newUser;
+        }
+
+        public async Task<User> VerifyUser(User user)
+        {
+            User exists = await _db.Users
+                .Include(a => a.Password)
+                .FirstOrDefaultAsync(u => u.Username == user.Username);
+
+            bool match = PasswordService.VerifyHash(user.Password.Hash, exists.Password.Hash);
+            if (!match) throw new ApplicationException("invalid login");
+
+            return exists;
         }
     }
 }

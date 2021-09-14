@@ -10,7 +10,7 @@ using WebApiTemplate.Services.Database;
 namespace WebApiTemplate.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210913221659_Init")]
+    [Migration("20210914025006_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,9 @@ namespace WebApiTemplate.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PasswordId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
