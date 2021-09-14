@@ -15,6 +15,7 @@ using WebApiTemplate.Services.Apptokens;
 using WebApiTemplate.Services.AuthConsumer;
 using WebApiTemplate.Services.Database.Settings;
 using WebApiTemplate.Services.Database;
+using WebApiTemplate.Services.AppInformation;
 
 namespace WebApiTemplate
 {
@@ -30,6 +31,10 @@ namespace WebApiTemplate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Di generic app info
+            AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
+            services.AddSingleton<IAppInformation>(appInfo);
+
             // Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
@@ -56,24 +61,45 @@ namespace WebApiTemplate
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiTemplate", Version = "v1" });
+                c.SwaggerDoc(appInfo.AppVersion, new OpenApiInfo
+                {
+                    Version = appInfo.AppVersion,
+                    Title = appInfo.AppTitle,
+                    Description = "A simple example ASP.NET Core Web API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Jude Giordano",
+                        Email = "judegiordano@gmail.com",
+                        Url = new Uri("https://github.com/judegiordano?tab=repositories"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                }
+                );
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiTemplate v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/{appInfo.AppVersion}/swagger.json", $"{appInfo.AppTitle} {appInfo.AppVersion}"));
             }
 
             // Custom middleware
             app.UseMiddleware<ExceptionHandler>();
             app.UseMiddleware<SecurityHeaders>();
             app.UseMiddleware<Authentication>();
+
+            app.UseHsts();
 
             app.UseHttpsRedirection();
 

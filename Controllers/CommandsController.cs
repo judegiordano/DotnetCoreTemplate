@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebApiTemplate.Dtos.Command;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
+using WebApiTemplate.Services.AppInformation;
 
 namespace WebApiTemplate.Controllers
 {
