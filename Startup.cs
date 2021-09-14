@@ -47,6 +47,7 @@ namespace WebApiTemplate
             AuthorizationTokens tokens = Configuration.GetSection("WebApiTemplate").Get<AuthorizationTokens>();
             services.AddSingleton<IAuthorizationTokens>(tokens);
             AuthConsumers.Consumers.Add(AuthConsumers.Consumer.Developer, tokens.DeveloperToken);
+            AuthConsumers.Consumers.Add(AuthConsumers.Consumer.ExampleClientA, tokens.ExampleClientAToken);
 
             // Di JSON Serializer
             services.AddControllers().AddNewtonsoftJson(s =>

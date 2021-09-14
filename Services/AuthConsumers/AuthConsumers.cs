@@ -6,7 +6,8 @@ namespace WebApiTemplate.Services.AuthConsumer
     {
         public enum Consumer
         {
-            Developer
+            Developer,
+            ExampleClientA
         }
         public static Dictionary<Consumer, string> Consumers = new Dictionary<Consumer, string>();
     }

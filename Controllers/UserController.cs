@@ -15,7 +15,6 @@ namespace WebApiTemplate.Controllers
     {
         private readonly IUserRepository _repo;
         private readonly IMapper _mapper;
-
         public UserController(IUserRepository repo, IMapper mapper)
         {
             _repo = repo;
@@ -31,6 +30,7 @@ namespace WebApiTemplate.Controllers
             return Ok(_mapper.Map<UserDto>(inserted));
         }
 
+        [OnlyAllow(AuthConsumers.Consumer.ExampleClientA)]
         [HttpPost("register")]
         public async Task<ActionResult> InsertUser(UserCreateDto user)
         {
@@ -40,6 +40,7 @@ namespace WebApiTemplate.Controllers
             return Ok(done);
         }
 
+        [OnlyAllow(AuthConsumers.Consumer.ExampleClientA)]
         [HttpPost("login")]
         public async Task<ActionResult> VerifyUser(UserVerifyDto user)
         {

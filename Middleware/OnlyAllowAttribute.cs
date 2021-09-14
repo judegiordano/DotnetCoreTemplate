@@ -5,6 +5,9 @@ using WebApiTemplate.Services.AuthConsumer;
 
 namespace WebApiTemplate.Middleware
 {
+    /// <summary>
+	///  Whitelists Just One Consumer; Developer is always allowed
+	/// </summary>
     public class OnlyAllowAttribute : TypeFilterAttribute
     {
         public OnlyAllowAttribute(AuthConsumers.Consumer value) : base(typeof(OnlyAllowFilter))
@@ -12,16 +15,13 @@ namespace WebApiTemplate.Middleware
             Arguments = new object[] { value };
         }
     }
-
     public class OnlyAllowFilter : IAuthorizationFilter
     {
         private AuthConsumers.Consumer _value { get; set; }
-
         public OnlyAllowFilter(AuthConsumers.Consumer value)
         {
             _value = value;
         }
-
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             try
@@ -31,6 +31,11 @@ namespace WebApiTemplate.Middleware
                 {
                     context.HttpContext.Response.StatusCode = 401;
                     throw new Exception("unauthorized");
+                }
+                // always allow developer to consume endpoint
+                if (token == AuthConsumers.Consumers[AuthConsumers.Consumer.Developer])
+                {
+                    return;
                 }
                 string auth = AuthConsumers.Consumers[_value];
                 if (auth != token)
