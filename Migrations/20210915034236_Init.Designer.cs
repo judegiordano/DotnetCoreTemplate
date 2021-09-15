@@ -10,7 +10,7 @@ using WebApiTemplate.Services.Database;
 namespace WebApiTemplate.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210914025006_Init")]
+    [Migration("20210915034236_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,31 +20,6 @@ namespace WebApiTemplate.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("WebApiTemplate.Models.Command", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("HowTo")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Line")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Platform")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Commands");
-                });
 
             modelBuilder.Entity("WebApiTemplate.Models.Password", b =>
                 {
@@ -60,7 +35,13 @@ namespace WebApiTemplate.Migrations
                     b.Property<int>("LoginAttempts")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("Uid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Uid")
+                        .IsUnique();
 
                     b.ToTable("Passwords");
                 });
@@ -75,6 +56,9 @@ namespace WebApiTemplate.Migrations
                     b.Property<int?>("PasswordId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("Uid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -83,6 +67,9 @@ namespace WebApiTemplate.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PasswordId");
+
+                    b.HasIndex("Uid")
+                        .IsUnique();
 
                     b.HasIndex("Username")
                         .IsUnique();

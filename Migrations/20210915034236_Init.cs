@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApiTemplate.Migrations
 {
@@ -7,28 +8,14 @@ namespace WebApiTemplate.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Commands",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HowTo = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Line = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Platform = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Commands", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Passwords",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Hash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LoginAttempts = table.Column<int>(type: "int", nullable: false)
+                    LoginAttempts = table.Column<int>(type: "int", nullable: false),
+                    Uid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +29,8 @@ namespace WebApiTemplate.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PasswordId = table.Column<int>(type: "int", nullable: true)
+                    PasswordId = table.Column<int>(type: "int", nullable: true),
+                    Uid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,9 +44,21 @@ namespace WebApiTemplate.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Passwords_Uid",
+                table: "Passwords",
+                column: "Uid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_PasswordId",
                 table: "Users",
                 column: "PasswordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Uid",
+                table: "Users",
+                column: "Uid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",
@@ -69,9 +69,6 @@ namespace WebApiTemplate.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Commands");
-
             migrationBuilder.DropTable(
                 name: "Users");
 

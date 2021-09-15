@@ -34,6 +34,8 @@ namespace WebApiTemplate
             // Di generic app info
             AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
             services.AddSingleton<IAppInformation>(appInfo);
+            // inject random options
+            RouterAttribute.baseUrl = appInfo.BaseUrl;
 
             // Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
             DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
@@ -57,7 +59,6 @@ namespace WebApiTemplate
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Di repositories
-            services.AddScoped<ICommandRepository, CommandRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddSwaggerGen(c =>

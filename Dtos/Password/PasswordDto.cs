@@ -1,8 +1,6 @@
-using WebApiTemplate.Models.Shared;
-
 namespace WebApiTemplate.Dtos.Password
 {
-    public class PasswordDto : Base
+    public class PasswordDto
     {
         public int LoginAttempts { get; set; }
     }

@@ -25,6 +25,13 @@ namespace WebApiTemplate.Repositories
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User> GetUserByUId(Guid uid)
+        {
+            return await _db.Users
+                .Include(a => a.Password)
+                .FirstOrDefaultAsync(u => u.Uid == uid);
+        }
+
         public async Task<User> InsertUser(User user)
         {
             User newUser = new User
