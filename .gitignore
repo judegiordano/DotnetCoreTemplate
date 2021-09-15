@@ -452,3 +452,10 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# idk what to call my out folder
+out/**/*
+build/**/*
+https/**/*
+!https/.gitkeep
+appsettings.Production.json

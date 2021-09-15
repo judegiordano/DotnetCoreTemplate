@@ -7,6 +7,7 @@ dotnet tool install --global dotnet-ef # for dotnet ef
 dotnet clean
 dotnet build
 dotnet run
+dotnet publish -c Release -o Out
 ```
 
 ## user secrets
@@ -16,6 +17,10 @@ dotnet user-secrets set <key> <value>
 dotnet user-secrets list
 dotnet user-secrets remove <key>
 dotnet user-secrets clear
+dotnet dev-certs https --clean
+dotnet dev-certs https
+dotnet dev-certs https --trust
+dotnet publish -c Release -o out
 ```
 
 ## ef cli
@@ -36,6 +41,8 @@ ctor -> {TAB} # class constructor
 ```
 docker volume ls
 docker volume prune
+docker build -t webapitemplate .
+docker run -d -p 8080:80 --name myapp webapitemplate
 ```
 
 ## Running Locally
