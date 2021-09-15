@@ -19,100 +19,108 @@ using WebApiTemplate.Services.AppInformation;
 
 namespace WebApiTemplate
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Di generic app info
-            AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
-            services.AddSingleton<IAppInformation>(appInfo);
-            // inject random options
-            RouterAttribute.baseUrl = appInfo.BaseUrl;
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			// initialize swagger ui
+			services.AddSwaggerGen(c => c.EnableAnnotations());
 
-            // Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
-            DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
-            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
+			// Di generic app info
+			AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
+			services.AddSingleton<IAppInformation>(appInfo);
+			// inject random options
+			RouterAttribute.baseUrl = appInfo.BaseUrl;
 
-            // Di appcode
-            AppCodeValidation appcode = Configuration.GetSection("WebApiTemplate").Get<AppCodeValidation>();
-            services.AddSingleton<IAppCodeValidation>(appcode);
+			// Di User Secret WebApiTemplate:ConnectionString Into Db ConnectionString
+			DatabaseConnection _database = Configuration.GetSection("WebApiTemplate").Get<DatabaseConnection>();
+			services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(_database.ConnectionString));
 
-            // Di app tokens
-            AuthorizationTokens tokens = Configuration.GetSection("WebApiTemplate").Get<AuthorizationTokens>();
-            services.AddSingleton<IAuthorizationTokens>(tokens);
-            AuthConsumers.Consumers.Add(AuthConsumers.Consumer.Developer, tokens.DeveloperToken);
-            AuthConsumers.Consumers.Add(AuthConsumers.Consumer.ExampleClientA, tokens.ExampleClientAToken);
+			// Di appcode
+			AppCodeValidation appcode = Configuration.GetSection("WebApiTemplate").Get<AppCodeValidation>();
+			services.AddSingleton<IAppCodeValidation>(appcode);
 
-            // Di JSON Serializer
-            services.AddControllers().AddNewtonsoftJson(s =>
-                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+			// Di app tokens
+			AuthorizationTokens tokens = Configuration.GetSection("WebApiTemplate").Get<AuthorizationTokens>();
+			services.AddSingleton<IAuthorizationTokens>(tokens);
+			AuthConsumers.Consumers.Add(AuthConsumers.Consumer.Developer, tokens.DeveloperToken);
+			AuthConsumers.Consumers.Add(AuthConsumers.Consumer.ExampleClientA, tokens.ExampleClientAToken);
 
-            // Di automapper for DTO
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			// Di JSON Serializer
+			services.AddControllers().AddNewtonsoftJson(s =>
+				s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
-            // Di repositories
-            services.AddScoped<IUserRepository, UserRepository>();
+			// Di automapper for DTO
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(appInfo.AppVersion, new OpenApiInfo
-                {
-                    Version = appInfo.AppVersion,
-                    Title = appInfo.AppTitle,
-                    Description = appInfo.AppDescription,
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Jude Giordano",
-                        Email = "judegiordano@gmail.com",
-                        Url = new Uri("https://github.com/judegiordano?tab=repositories"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
-                }
-                );
-            });
-        }
+			// Di repositories
+			services.AddScoped<IUserRepository, UserRepository>();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/{appInfo.AppVersion}/swagger.json", $"{appInfo.AppTitle} {appInfo.AppVersion}"));
-            }
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc(appInfo.AppVersion, new OpenApiInfo
+				{
+					Version = appInfo.AppVersion,
+					Title = appInfo.AppTitle,
+					Description = appInfo.AppDescription,
+					TermsOfService = new Uri("https://example.com/terms"),
+					Contact = new OpenApiContact
+					{
+						Name = "Jude Giordano",
+						Email = "judegiordano@gmail.com",
+						Url = new Uri("https://github.com/judegiordano?tab=repositories"),
+					},
+					License = new OpenApiLicense
+					{
+						Name = "Use under LICX",
+						Url = new Uri("https://example.com/license"),
+					}
+				}
+				);
+			});
+		}
 
-            // Custom middleware
-            app.UseMiddleware<ExceptionHandler>();
-            app.UseMiddleware<SecurityHeaders>();
-            app.UseMiddleware<Authentication>();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			AppInformation appInfo = Configuration.GetSection(nameof(AppInformation)).Get<AppInformation>();
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseHsts();
+			app.UseSwagger();
+			app.UseSwaggerUI(c =>
+			{
+				c.SwaggerEndpoint($"/swagger/{appInfo.AppVersion}/swagger.json", $"{appInfo.AppTitle} {appInfo.AppVersion}");
+				c.RoutePrefix = String.Empty;
+			});
 
-            app.UseHttpsRedirection();
+			// Custom middleware
+			app.UseMiddleware<ExceptionHandler>();
+			app.UseMiddleware<SecurityHeaders>();
+			app.UseMiddleware<Authentication>();
 
-            app.UseRouting();
+			app.UseHsts();
 
-            app.UseAuthorization();
+			app.UseHttpsRedirection();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			app.UseRouting();
+
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+		}
+	}
 }
