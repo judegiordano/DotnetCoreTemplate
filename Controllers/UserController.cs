@@ -13,7 +13,7 @@ namespace WebApiTemplate.Controllers
 {
 	[ApiController]
 	[Router("[controller]")]
-	public class UserController : ControllerBase
+	public class UserController : CustomControllerBase
 	{
 		private readonly IUserRepository _repo;
 		private readonly IMapper _mapper;
