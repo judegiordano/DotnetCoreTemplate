@@ -9,7 +9,11 @@ namespace WebApiTemplate.Models.Shared
 	[Index(nameof(Uid), IsUnique = true)]
 	public class Base
 	{
-		public Base() => Uid = Utility.GenerateGuid();
+		public Base()
+		{
+			Uid = Utility.GenerateGuid();
+			DateCreated = DateTime.Now;
+		}
 
 		[Key]
 		[IgnoreDataMember]
@@ -17,6 +21,11 @@ namespace WebApiTemplate.Models.Shared
 
 		[Required]
 		public Guid Uid { get; private set; }
+
+		[Required]
+		[IgnoreDataMember]
+		[DataType(DataType.DateTime)]
+		public DateTime DateCreated { get; private set; }
 
 		[IgnoreDataMember]
 		public bool IsDeleted { get; set; } = false;

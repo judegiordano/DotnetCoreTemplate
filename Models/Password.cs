@@ -7,6 +7,7 @@ namespace WebApiTemplate.Models
 	{
 		[Required]
 		public string Hash { get; set; }
+
 		public int LoginAttempts { get; set; } = 0;
 	}
 }
