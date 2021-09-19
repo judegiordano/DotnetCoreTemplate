@@ -71,7 +71,7 @@ namespace WebApiTemplate
 					Version = appInfo.AppVersion,
 					Title = appInfo.AppTitle,
 					Description = appInfo.AppDescription,
-					TermsOfService = new Uri("https://example.com/terms"),
+					TermsOfService = new Uri(appInfo.TermsOfServiceUrl),
 					Contact = new OpenApiContact
 					{
 						Name = "Jude Giordano",
@@ -81,7 +81,7 @@ namespace WebApiTemplate
 					License = new OpenApiLicense
 					{
 						Name = "Use under LICX",
-						Url = new Uri("https://example.com/license"),
+						Url = new Uri(appInfo.LicenseUrl),
 					}
 				}
 				);
