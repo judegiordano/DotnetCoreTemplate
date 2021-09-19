@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebApiTemplate.Dtos.User;
 using WebApiTemplate.Models;
 using WebApiTemplate.Repositories.Abstract;
 using WebApiTemplate.Middleware;
 using WebApiTemplate.Services.AuthConsumer;
 using Swashbuckle.AspNetCore.Annotations;
+using static WebApiTemplate.Maps.Abstract;
 
 namespace WebApiTemplate.Controllers
 {
@@ -16,11 +15,9 @@ namespace WebApiTemplate.Controllers
 	public class UserController : CustomControllerBase
 	{
 		private readonly IUserRepository _repo;
-		private readonly IMapper _mapper;
-		public UserController(IUserRepository repo, IMapper mapper)
+		public UserController(IUserRepository repo)
 		{
 			_repo = repo;
-			_mapper = mapper;
 		}
 
 		[SwaggerOperation(
@@ -32,7 +29,8 @@ namespace WebApiTemplate.Controllers
 		public async Task<ActionResult> GetUserById(int id)
 		{
 			User done = await _repo.GetUserById(id);
-			return Ok(_mapper.Map<UserDto>(done));
+			return Ok(done);
+			// return Ok(_mapper.Map<UserDto>(done));
 		}
 
 		[SwaggerOperation(
@@ -43,8 +41,8 @@ namespace WebApiTemplate.Controllers
 		[HttpGet("uid/{uid}")]
 		public async Task<ActionResult> GetUserByUid(Guid uid)
 		{
-			User found = await _repo.GetUserByUId(uid);
-			return Ok(_mapper.Map<UserDto>(found));
+			User found = await _repo.GetUserByUid(uid);
+			return Ok(found);
 		}
 
 		[SwaggerOperation(
@@ -53,12 +51,10 @@ namespace WebApiTemplate.Controllers
 		)]
 		[OnlyAllow(AuthConsumers.Consumer.ExampleClientA)]
 		[HttpPost("register")]
-		public async Task<ActionResult> InsertUser(UserCreateDto user)
+		public async Task<ActionResult> InsertUser(Register user)
 		{
-			User mapped = _mapper.Map<User>(user);
-			User inserted = await _repo.InsertUser(mapped);
-			UserDto done = _mapper.Map<UserDto>(inserted);
-			return Ok(done);
+			User inserted = await _repo.InsertUser(user);
+			return Ok(inserted);
 		}
 
 		[SwaggerOperation(
@@ -67,12 +63,22 @@ namespace WebApiTemplate.Controllers
 		)]
 		[OnlyAllow(AuthConsumers.Consumer.ExampleClientA)]
 		[HttpPost("login")]
-		public async Task<ActionResult> VerifyUser(UserVerifyDto user)
+		public async Task<ActionResult> VerifyUser(Login user)
 		{
-			User mapped = _mapper.Map<User>(user);
-			User found = await _repo.VerifyUser(mapped);
-			UserDto done = _mapper.Map<UserDto>(found);
-			return Ok(done);
+			User found = await _repo.VerifyUser(user);
+			return Ok(found);
+		}
+
+		[SwaggerOperation(
+			Summary = "Soft Delete User",
+			Tags = new[] { "User" }
+		)]
+		[OnlyAllow(AuthConsumers.Consumer.ExampleClientA)]
+		[HttpDelete("delete/{uid}")]
+		public async Task<ActionResult> SoftDeleteUser(Guid uid)
+		{
+			bool deleted = await _repo.DeleteUserByUid(uid);
+			return Ok(deleted);
 		}
 	}
 }

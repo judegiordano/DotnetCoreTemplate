@@ -1,7 +1,7 @@
 version: "3.7"
 services:
-  dotnetcore-dev-container:
-    container_name: dotnetcore-dev-container
+  dotnetcore-database-container:
+    container_name: dotnetcore-database-container
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - "1433:1433"
@@ -13,6 +13,11 @@ services:
       - sqldata:/var/opt/sqlserver/data
       - sqllog:/var/opt/sqlserver/log
       - sqlbackup:/var/opt/sqlserver/backup
+    networks:
+      - common
+networks:
+  common:
+    driver: bridge
 volumes:
   sqlsystem:
   sqldata:

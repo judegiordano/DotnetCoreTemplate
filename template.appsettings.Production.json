@@ -1,0 +1,23 @@
+{
+	"https_port": 443,
+	"WebApiTemplate": {
+		"ExampleClientAToken": "",
+		"DeveloperToken": "",
+		"ConnectionString": "",
+		"AppCode": ""
+	},
+	"Logging": {
+		"LogLevel": {
+			"Default": "",
+			"Microsoft": "",
+			"Microsoft.Hosting.Lifetime": ""
+		}
+	},
+	"AppInformation": {
+		"AppVersion": "",
+		"AppTitle": "",
+		"AppDescription": "",
+		"BaseUrl": ""
+	},
+	"AllowedHosts": "*"
+}

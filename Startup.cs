@@ -59,7 +59,7 @@ namespace WebApiTemplate
 				s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
 			// Di automapper for DTO
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			// services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 			// Di repositories
 			services.AddScoped<IUserRepository, UserRepository>();
